@@ -1,9 +1,14 @@
+# Shuja Pro AI v2
+# Price and Candle Engine
+
 import requests
 import pandas as pd
+
 
 SYMBOL = "BTCUSDT"
 INTERVAL = "5m"
 LIMIT = 200
+
 
 PRICE_URL = (
     "https://data-api.binance.vision/api/v3/ticker/price"
@@ -17,7 +22,6 @@ KLINES_URL = (
 def get_btc_price():
 
     try:
-
         response = requests.get(
             PRICE_URL,
             params={
@@ -29,20 +33,20 @@ def get_btc_price():
         data = response.json()
 
         if "price" not in data:
-            print(data)
+            print("Price response:", data)
             return None
 
         return float(data["price"])
 
     except Exception as e:
-        print(e)
+        print("Price error:", e)
         return None
+
 
 
 def get_candles():
 
     try:
-
         response = requests.get(
             KLINES_URL,
             params={
@@ -67,12 +71,14 @@ def get_candles():
                 "close_time",
                 "quote_volume",
                 "trades",
-                "tb_base",
-                "tb_quote",
+                "buy_volume",
+                "buy_quote",
                 "ignore"
             ]
         )
-                for col in [
+
+
+        for col in [
             "open",
             "high",
             "low",
@@ -81,11 +87,14 @@ def get_candles():
         ]:
             df[col] = df[col].astype(float)
 
+
         return df
+
 
     except Exception as e:
         print("Candle error:", e)
         return None
+
 
 
 def get_price_change(start_price, current_price):
@@ -97,24 +106,11 @@ def get_price_change(start_price, current_price):
     ):
         return 0
 
+
     change = (
         (current_price - start_price)
         / start_price
     ) * 100
 
+
     return round(change, 4)
-
-
-if __name__ == "__main__":
-
-    print("Testing Price Engine")
-
-    print(
-        "Current BTC:",
-        get_btc_price()
-    )
-
-    candles = get_candles()
-
-    if candles is not None:
-        print(candles.tail())
