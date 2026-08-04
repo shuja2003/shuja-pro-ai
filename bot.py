@@ -49,8 +49,7 @@ Mode: PAPER TRADING
 """
 )
 
-
-        if signal == "🟢 BUY":
+if signal == "🟢 BUY":
 
             open_paper_trade(
                 "BUY",
