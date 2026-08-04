@@ -3,7 +3,7 @@ import time
 
 SYMBOL = "BTCUSDT"
 
-BINANCE_URL = "https://api.binance.com/api/v3/ticker/price"
+BINANCE_URL = "https://data-api.binance.vision/api/v3/ticker/price"
 
 
 def get_btc_price():
