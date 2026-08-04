@@ -1,8 +1,8 @@
 # Shuja Pro AI v1
 # Paper Trading Engine
 
-import time
 from datetime import datetime
+from trade_log import save_trade
 
 
 balance = 1000
@@ -41,6 +41,7 @@ def close_paper_trade(exit_price):
 
     entry = open_trade["entry"]
     direction = open_trade["direction"]
+    confidence = open_trade["confidence"]
 
     if direction == "BUY":
         profit = (
@@ -74,7 +75,20 @@ def close_paper_trade(exit_price):
         losses
     )
 
+
+    # Save trade history
+    save_trade(
+        direction,
+        entry,
+        exit_price,
+        result,
+        profit,
+        confidence
+    )
+
+
     open_trade = None
+
 
 
 def get_statistics():
@@ -95,6 +109,7 @@ def get_statistics():
         "Wins": wins,
         "Losses": losses,
         "Win Rate": round(
-            win_rate, 2
+            win_rate,
+            2
         )
-    }
+}
