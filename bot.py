@@ -25,19 +25,17 @@ def run_bot():
             time.sleep(5)
             continue
 
-
         analysis = analyze_market(None)
 
         signal = analysis["signal"]
         confidence = analysis["confidence"]
 
-
         print("\nBTC Price:", price)
-print("Signal:", signal)
-print("Confidence:", confidence)
+        print("Signal:", signal)
+        print("Confidence:", confidence)
 
-send_message(
-    f"""🤖 Shuja Pro AI
+        send_message(
+            f"""🤖 Shuja Pro AI
 
 BTCUSDT
 
@@ -47,9 +45,9 @@ Confidence: {confidence}%
 
 Mode: PAPER TRADING
 """
-)
+        )
 
-if signal == "🟢 BUY":
+        if signal == "🟢 BUY":
 
             open_paper_trade(
                 "BUY",
@@ -65,18 +63,12 @@ if signal == "🟢 BUY":
                 exit_price
             )
 
-
-            print(
-                get_statistics()
-            )
-
+            print(get_statistics())
 
         else:
             print("No trade")
 
-
         time.sleep(60)
-
 
 
 if __name__ == "__main__":
