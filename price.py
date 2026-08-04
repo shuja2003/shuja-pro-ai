@@ -3,15 +3,10 @@ import time
 
 SYMBOL = "BTCUSDT"
 
-BINANCE_URL = (
-    "https://api.binance.com/api/v3/ticker/price"
-)
+BINANCE_URL = "https://api.binance.com/api/v3/ticker/price"
 
 
 def get_btc_price():
-    """
-    Get current BTC price from Binance
-    """
     try:
         response = requests.get(
             BINANCE_URL,
@@ -21,6 +16,10 @@ def get_btc_price():
 
         data = response.json()
 
+        if "price" not in data:
+            print("Binance response:", data)
+            return None
+
         return float(data["price"])
 
     except Exception as e:
@@ -29,9 +28,9 @@ def get_btc_price():
 
 
 def get_price_change(start_price, current_price):
-    """
-    Calculate percentage change
-    """
+
+    if start_price is None or current_price is None:
+        return 0
 
     if start_price == 0:
         return 0
@@ -56,17 +55,8 @@ if __name__ == "__main__":
 
         current = get_btc_price()
 
-        change = get_price_change(
-            start,
-            current
-        )
-
-        print(
-            "BTC:",
-            current,
-            "Change:",
-            change,
-            "%"
-        )
+        if current is not None:
+            change = get_price_change(start, current)
+            print("BTC:", current, "Change:", change, "%")
 
         time.sleep(5)
