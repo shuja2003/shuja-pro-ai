@@ -33,10 +33,11 @@ def run_bot():
 
 
         print("\nBTC Price:", price)
-        print("Signal:", signal)
-        print("Confidence:", confidence)send_message(
-    f"""
-🤖 Shuja Pro AI
+print("Signal:", signal)
+print("Confidence:", confidence)
+
+send_message(
+    f"""🤖 Shuja Pro AI
 
 BTCUSDT
 
@@ -44,10 +45,9 @@ Signal: {signal}
 
 Confidence: {confidence}%
 
-Mode:
-PAPER TRADING
+Mode: PAPER TRADING
 """
-        )
+)
 
 
         if signal == "🟢 BUY":
