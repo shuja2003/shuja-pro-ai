@@ -74,7 +74,7 @@ def analyze_market(data):
         volume_score
     )
 
-    direction = "BUY"
+    direction = "SELL"
 
     signal = get_signal(
         confidence,
