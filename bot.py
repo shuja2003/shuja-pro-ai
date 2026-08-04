@@ -16,7 +16,7 @@ def run_bot():
 
     print("🚀 Shuja Pro AI Started")
 
-    while True:
+    for _ in range(3):
 
         price = get_btc_price()
 
