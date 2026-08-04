@@ -1,87 +1,110 @@
-# Shuja Pro AI v1
-# Strategy and confidence engine
+# Shuja Pro AI v2
+# Real Indicator Strategy
 
 from config import CONFIDENCE_THRESHOLD
+from indicators import (
+    calculate_ema,
+    calculate_rsi,
+    calculate_macd,
+    calculate_volume_strength
+)
 
 
-def calculate_confidence(
-    trend_score,
-    rsi_score,
-    macd_score,
-    atr_score,
-    volume_score
-):
-    """
-    Combine all signals into confidence score
-    """
+def analyze_market(data):
 
-    total = (
-        trend_score
-        + rsi_score
-        + macd_score
-        + atr_score
-        + volume_score
+    if data is None:
+        return {
+            "signal": "⚪ NO TRADE",
+            "confidence": 0
+        }
+
+
+    close = data["close"]
+
+
+    ema50 = calculate_ema(
+        data,
+        50
     )
 
-    return min(total, 100)
+    ema200 = calculate_ema(
+        data,
+        200
+    )
 
 
-def get_signal(
-    confidence,
-    direction
-):
-    """
-    Final trading decision
-    """
+    rsi = calculate_rsi(
+        data
+    )
+
+
+    macd, signal_line = calculate_macd(
+        data
+    )
+
+
+    volume_strength = calculate_volume_strength(
+        data
+    )
+
+
+    score = 0
+    direction = "NONE"
+
+
+    # Trend
+    if ema50.iloc[-1] > ema200.iloc[-1]:
+        score += 30
+        direction = "BUY"
+
+    elif ema50.iloc[-1] < ema200.iloc[-1]:
+        score += 30
+        direction = "SELL"
+
+
+    # RSI
+    if rsi.iloc[-1] > 50:
+        score += 20
+
+    elif rsi.iloc[-1] < 50:
+        score += 20
+
+
+    # MACD
+    if macd.iloc[-1] > signal_line.iloc[-1]:
+        score += 20
+
+    else:
+        score += 20
+
+
+    # Volume
+    if volume_strength > 1:
+        score += 15
+
+
+    confidence = min(
+        score,
+        100
+    )
+
 
     if confidence >= CONFIDENCE_THRESHOLD:
 
         if direction == "BUY":
-            return "🟢 BUY"
+            final_signal = "🟢 BUY"
 
         elif direction == "SELL":
-            return "🔴 SELL"
+            final_signal = "🔴 SELL"
 
+        else:
+            final_signal = "⚪ NO TRADE"
 
-    return "⚪ NO TRADE"
+    else:
+        final_signal = "⚪ NO TRADE"
 
-
-def analyze_market(data):
-    """
-    Placeholder for full AI analysis.
-
-    Later we will connect:
-    - EMA trend
-    - RSI
-    - MACD
-    - ATR
-    - Volume
-    - Order book
-    - Trade flow
-    """
-
-    trend_score = 25
-    rsi_score = 15
-    macd_score = 15
-    atr_score = 10
-    volume_score = 10
-
-    confidence = calculate_confidence(
-        trend_score,
-        rsi_score,
-        macd_score,
-        atr_score,
-        volume_score
-    )
-
-    direction = "SELL"
-
-    signal = get_signal(
-        confidence,
-        direction
-    )
 
     return {
-        "signal": signal,
+        "signal": final_signal,
         "confidence": confidence
     }
