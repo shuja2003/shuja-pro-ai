@@ -47,21 +47,18 @@ def run_bot():
         print("Signal:", signal)
         print("Confidence:", confidence)
 
-                send_message(
+        send_message(
             f"""🤖 Shuja Pro AI
 
-BTCUSDT
-
-Price: {price}
+BTCUSDT Price: {price}
 
 Signal: {signal}
 
 Confidence: {confidence}%
 
-Mode:
-PAPER TRADING
-"""
+Mode: PAPER TRADING"""
         )
+
 
         if signal == "🟢 BUY" or signal == "🔴 SELL":
 
@@ -82,6 +79,7 @@ PAPER TRADING
             time.sleep(60)
 
             exit_price = get_btc_price()
+
             if exit_price is not None:
 
                 close_paper_trade(exit_price)
@@ -94,19 +92,21 @@ PAPER TRADING
                     f"""📊 Paper Trade Summary
 
 Total Trades: {stats['Total Trades']}
+
 Wins: {stats['Wins']}
+
 Losses: {stats['Losses']}
-Win Rate: {stats['Win Rate']}%
-"""
+
+Win Rate: {stats['Win Rate']}%"""
                 )
 
             else:
-
                 print("Could not get exit price")
 
-                else:
 
+        else:
             print("No trade")
+
 
         time.sleep(60)
 
