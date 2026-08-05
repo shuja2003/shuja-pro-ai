@@ -96,14 +96,22 @@ PAPER TRADING
 
             if exit_price:
 
-                close_paper_trade(
-                    exit_price
-                )
+    close_paper_trade(exit_price)
 
+    stats = get_statistics()
 
-                print(
-                    get_statistics()
-                )
+    print(stats)
+
+    send_message(
+        f"""📊 Trade Closed
+
+Total Trades: {stats['Total Trades']}
+Wins: {stats['Wins']}
+Losses: {stats['Losses']}
+
+Win Rate: {stats['Win Rate']}%
+"""
+    )
 
 
         else:
