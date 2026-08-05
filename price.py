@@ -1,5 +1,5 @@
-# Shuja Pro AI v2
-# Price and Candle Engine
+# Shuja Pro AI v4
+# BTC 5M Price and Candle Engine
 
 import requests
 import pandas as pd
@@ -94,6 +94,45 @@ def get_candles():
     except Exception as e:
         print("Candle error:", e)
         return None
+
+
+
+def get_current_candle():
+
+    candles = get_candles()
+
+    if candles is None:
+        return None
+
+    return candles.iloc[-1]
+
+
+
+def get_candle_open_price():
+
+    candle = get_current_candle()
+
+    if candle is None:
+        return None
+
+    return float(candle["open"])
+
+
+
+def get_candle_direction():
+
+    candle = get_current_candle()
+
+    if candle is None:
+        return "UNKNOWN"
+
+    if candle["close"] > candle["open"]:
+        return "UP"
+
+    elif candle["close"] < candle["open"]:
+        return "DOWN"
+
+    return "SIDEWAYS"
 
 
 
