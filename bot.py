@@ -94,16 +94,16 @@ PAPER TRADING
             exit_price = get_btc_price()
 
 
-            if exit_price:
+                        if exit_price:
 
-    close_paper_trade(exit_price)
+                close_paper_trade(exit_price)
 
-    stats = get_statistics()
+                stats = get_statistics()
 
-    print(stats)
+                print(stats)
 
-    send_message(
-        f"""📊 Trade Closed
+                send_message(
+                    f"""📊 Trade Closed
 
 Total Trades: {stats['Total Trades']}
 Wins: {stats['Wins']}
@@ -111,8 +111,7 @@ Losses: {stats['Losses']}
 
 Win Rate: {stats['Win Rate']}%
 """
-    )
-
+                )
 
         else:
 
@@ -126,3 +125,4 @@ Win Rate: {stats['Win Rate']}%
 if __name__ == "__main__":
 
     run_bot()
+
