@@ -61,10 +61,12 @@ def analyze_market(data):
         score += 30
         direction = "SELL"
 
+# RSI
+if direction == "BUY" and rsi.iloc[-1] > 55:
+    score += 20
 
-    # RSI
-    if rsi.iloc[-1] > 50:
-        score += 20
+elif direction == "SELL" and rsi.iloc[-1] < 45:
+    score += 20
 
     elif rsi.iloc[-1] < 50:
         score += 20
