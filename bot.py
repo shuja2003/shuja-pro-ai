@@ -47,7 +47,7 @@ def run_bot():
         print("Signal:", signal)
         print("Confidence:", confidence)
 
-        send_message(
+                send_message(
             f"""🤖 Shuja Pro AI
 
 BTCUSDT
@@ -77,10 +77,12 @@ PAPER TRADING
                 confidence
             )
 
+            print("Waiting 60 seconds to close trade...")
+
             time.sleep(60)
 
             exit_price = get_btc_price()
-                        if exit_price is not None:
+            if exit_price is not None:
 
                 close_paper_trade(exit_price)
 
@@ -98,7 +100,11 @@ Win Rate: {stats['Win Rate']}%
 """
                 )
 
-        else:
+            else:
+
+                print("Could not get exit price")
+
+                else:
 
             print("No trade")
 
