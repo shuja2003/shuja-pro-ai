@@ -1,7 +1,9 @@
 import asyncio
 import websockets
+import json
 
 URL = "wss://ws-live-data.polymarket.com"
+
 
 async def main():
 
@@ -11,8 +13,23 @@ async def main():
 
         print("✅ Connected to Polymarket RTDS", flush=True)
 
+        subscribe_message = {
+            "action": "subscribe",
+            "subscriptions": [
+                {
+                    "topic": "crypto_prices",
+                    "type": "btc"
+                }
+            ]
+        }
+
+        await ws.send(json.dumps(subscribe_message))
+
+        print("📡 Subscription sent", flush=True)
+
         for i in range(5):
             message = await ws.recv()
+            print("\nMESSAGE:")
             print(message, flush=True)
 
         print("✅ Test completed", flush=True)
