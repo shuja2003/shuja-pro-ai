@@ -1,11 +1,14 @@
-name: Shuja Pro AI Test
+name: Shuja Pro AI
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    timeout-minutes: 330
 
     steps:
       - name: Checkout
