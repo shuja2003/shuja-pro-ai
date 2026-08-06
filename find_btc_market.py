@@ -4,9 +4,15 @@ from polymarket import AsyncPublicClient
 
 async def main():
 
+    print("Connecting to Polymarket API...", flush=True)
+
     async with AsyncPublicClient() as client:
 
+        print("✅ Connected", flush=True)
+
         markets = client.list_markets(closed=False)
+
+        found = 0
 
         async for market in markets.iter_items():
 
@@ -14,14 +20,19 @@ async def main():
 
             if "bitcoin" in question or "btc" in question:
 
-                print("\nQUESTION:")
-                print(market.question)
+                found += 1
 
-                print("MARKET ID:")
-                print(market.id)
+                print("\n====================", flush=True)
+                print("QUESTION:", market.question, flush=True)
+                print("MARKET ID:", market.id, flush=True)
 
-                print("TOKENS:")
-                print(market.tokens)
+                print("TOKENS:", flush=True)
+                print(market.tokens, flush=True)
+
+                if found >= 10:
+                    break
+
+        print("\n✅ Search completed", flush=True)
 
 
 if __name__ == "__main__":
