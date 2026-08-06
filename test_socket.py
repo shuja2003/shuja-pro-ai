@@ -1,30 +1,21 @@
-# Polymarket RTDS Socket Test
-# Shuja BTC 5M Bot
-
 import asyncio
 import websockets
 
-
 URL = "wss://ws-live-data.polymarket.com"
-
 
 async def main():
 
-    print("Connecting to Polymarket RTDS...")
+    print("Connecting to Polymarket RTDS...", flush=True)
 
-    try:
-        async with websockets.connect(URL) as ws:
+    async with websockets.connect(URL) as ws:
 
-            print("✅ Connected to Polymarket RTDS")
+        print("✅ Connected to Polymarket RTDS", flush=True)
 
-            while True:
-                message = await ws.recv()
+        for i in range(5):
+            message = await ws.recv()
+            print(message, flush=True)
 
-                print("\n--- MESSAGE ---")
-                print(message)
-
-    except Exception as e:
-        print("❌ Error:", e)
+        print("✅ Test completed", flush=True)
 
 
 if __name__ == "__main__":
