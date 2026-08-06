@@ -1,39 +1,51 @@
-import asyncio
-from polymarket import AsyncPublicClient
+import requests
 
 
-async def main():
+URL = "https://gamma-api.polymarket.com/markets"
 
-    print("Connecting to Polymarket API...", flush=True)
 
-    async with AsyncPublicClient() as client:
+def main():
 
-        print("✅ Connected", flush=True)
+    print("Fetching Polymarket markets...", flush=True)
 
-        markets = client.list_markets(closed=False)
+    response = requests.get(
+        URL,
+        params={
+            "closed": "false",
+            "limit": 100
+        },
+        timeout=20
+    )
 
-        found = 0
+    markets = response.json()
 
-        async for market in markets.iter_items():
+    found = 0
 
-            question = market.question.lower()
+    for market in markets:
 
-            if "bitcoin" in question or "btc" in question:
+        question = market.get("question", "")
 
-                found += 1
+        if "bitcoin" in question.lower() or "btc" in question.lower():
 
-                print("\n====================", flush=True)
-                print("QUESTION:", market.question, flush=True)
-                print("MARKET ID:", market.id, flush=True)
+            found += 1
 
-                print("TOKENS:", flush=True)
-                print(market.tokens, flush=True)
+            print("\n====================")
+            print("QUESTION:")
+            print(question)
 
-                if found >= 10:
-                    break
+            print("MARKET ID:")
+            print(market.get("id"))
 
-        print("\n✅ Search completed", flush=True)
+            print("TOKENS:")
+            print(market.get("clobTokenIds"))
+
+            if found >= 10:
+                break
+
+    print("\n✅ Done")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
+    
+                
